@@ -1,0 +1,28 @@
+pipeline {
+    agent any
+
+    stages {
+  stage('clone repository') {
+    steps {
+      git branch: 'main', url: 'https://github.com/jakubpanda/Frontend.git'
+    }
+  }
+
+  stage('show file') {
+    steps {
+      sh 'ls -a'
+    }
+  }
+
+  stage('run unit') {
+    steps {
+      sh '''pip3 install -r requirements.txt
+python3 -m pytest --cov=. --cov-report xml:test-results/coverage.xml --junitxml=test-results/pytest-report.xml
+
+'''
+    }
+  }
+
+}
+
+}
